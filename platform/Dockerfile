@@ -1,6 +1,6 @@
 FROM ubuntu:focal
 
-LABEL maintainer="Tafil Avdyli <tafil@tafhub.de>"
+LABEL maintainer="Trustelem <contact@trustelem.com>"
 
 ENV TZ=Europe/Berlin
 
@@ -8,7 +8,10 @@ ENV TZ=Europe/Berlin
 ENV SDK_CMD_TOOLS=6858069
 # Get BUILD ID from here: https://dev.azure.com/xamarin/public/_build?definitionId=48&_a=summary
 # Click on the desired commit and extract the buildId from the url
-ENV XAMARIN_OSS_BUILD_ID=31879
+ENV XAMARIN_OSS_BUILD_ID=34853
+
+# Copy library scripts to execute
+COPY library-scripts/common-debian.sh library-scripts/meta.env /tmp/library-scripts/
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -81,3 +84,17 @@ ENV PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
 
 RUN yes | sdkmanager --licenses && \
     sdkmanager "platform-tools"
+
+# [Option] Install zsh
+ARG INSTALL_ZSH="true"
+# [Option] Upgrade OS packages to their latest versions
+ARG UPGRADE_PACKAGES="false"
+# Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
+ARG USERNAME=build
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+RUN bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+# Remove library scripts for final image
+RUN rm -rf /tmp/library-scripts

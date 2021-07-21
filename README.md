@@ -1,7 +1,9 @@
 # xamarin-android
 Build Xamarin.Forms and Xamarin.Android projects in a docker container 
 
-For this docker image i used the following pages as references:
+For this docker image we used the following pages as references:
+* https://github.com/tafilz/xamarin-android
+* https://github.com/microsoft/vscode-dev-containers
 * https://hub.docker.com/r/nathansamson/xamarin-android-docker
 * https://github.com/chiticariu/xamarin-android
 * https://github.com/Crashdummyy/XamarinRiderDev
@@ -40,7 +42,7 @@ stages:
   - build
 
 build-android:
-  image: tafilz/xamarin-android:29
+  image: trustelem/xamarin-android:29
   stage: build
   only:
     - master
