@@ -5,7 +5,7 @@ LABEL maintainer="Trustelem <contact@trustelem.com>"
 ENV TZ=Europe/Berlin
 
 # Get command line tools version from here: https://developer.android.com/studio
-ENV SDK_CMD_TOOLS=6858069
+ENV SDK_CMD_TOOLS=7302050
 # Get BUILD ID from here: https://dev.azure.com/xamarin/public/_build?definitionId=48&_a=summary
 # Click on the desired commit and extract the buildId from the url
 ENV XAMARIN_OSS_BUILD_ID=31879
