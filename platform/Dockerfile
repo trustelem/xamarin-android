@@ -8,10 +8,7 @@ ENV TZ=Europe/Berlin
 ENV SDK_CMD_TOOLS=6858069
 # Get BUILD ID from here: https://dev.azure.com/xamarin/public/_build?definitionId=48&_a=summary
 # Click on the desired commit and extract the buildId from the url
-ENV XAMARIN_OSS_BUILD_ID=34853
-
-# Copy library scripts to execute
-COPY library-scripts/common-debian.sh library-scripts/meta.env /tmp/library-scripts/
+ENV XAMARIN_OSS_BUILD_ID=31879
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -79,14 +76,17 @@ RUN apt-get update && apt-get install -y \
     rm -rf /usr/lib/android-sdk/tmp/ && \
     rm commandlinetools-linux.zip 
 
+ENV AndroidSdkDirectory=/usr/lib/android-sdk
 ENV ANDROID_SDK_ROOT=/usr/lib/android-sdk
 ENV PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
 
 RUN yes | sdkmanager --licenses && \
     sdkmanager "platform-tools"
 
+# Copy library scripts to execute
+COPY library-scripts/common-debian.sh library-scripts/meta.env /tmp/library-scripts/
 # [Option] Install zsh
-ARG INSTALL_ZSH="true"
+ARG INSTALL_ZSH="false"
 # [Option] Upgrade OS packages to their latest versions
 ARG UPGRADE_PACKAGES="false"
 # Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
